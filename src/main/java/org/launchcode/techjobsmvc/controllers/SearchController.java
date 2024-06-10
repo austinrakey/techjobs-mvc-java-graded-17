@@ -34,19 +34,32 @@ public class SearchController {
                                        @RequestParam String searchType,
                                        @RequestParam String searchTerm) {
         ArrayList<Job> jobs;
-        if (searchType.equals("all") && (searchTerm == null || searchTerm.isBlank())) {
+//        if (searchType.equals("all") && (searchTerm == null || searchTerm.isBlank())) {
+//            jobs = JobData.findAll();
+//        } else {
+//            jobs = JobData.findByColumnAndValue(searchType, searchTerm);
+//        }
+//
+//        model.addAttribute("columns", columnChoices);
+//        model.addAttribute("jobs", jobs);
+//        model.addAttribute("title", "Jobs with " + searchType + ": " + searchTerm);
+//
+//        System.out.println("Search Term: " + searchTerm);
+//        System.out.println("Search Type: " + searchType);
+//        System.out.println("Number of Jobs Found: " + jobs.size());
+//
+//        return "search";
+//    }
+
+        if (searchTerm.toLowerCase().equals("all") || searchTerm.isEmpty()){
             jobs = JobData.findAll();
+            model.addAttribute("title", "All Jobs");
         } else {
             jobs = JobData.findByColumnAndValue(searchType, searchTerm);
+            model.addAttribute("title", "Jobs with " + columnChoices.get(searchType) + ": " + searchTerm);
         }
-
-        model.addAttribute("columns", columnChoices);
         model.addAttribute("jobs", jobs);
-        model.addAttribute("title", "Jobs with " + searchType + ": " + searchTerm);
-
-        System.out.println("Search Term: " + searchTerm);
-        System.out.println("Search Type: " + searchType);
-        System.out.println("Number of Jobs Found: " + jobs.size());
+        model.addAttribute("columns", columnChoices);
 
         return "search";
     }
